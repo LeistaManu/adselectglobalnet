@@ -8,6 +8,13 @@
       "when": 1794597166313,
       "tag": "0000_restore_grants_and_signup_trigger",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1794598906921,
+      "tag": "0001_balance_syncs",
+      "breakpoints": true
     }
   ]
 }

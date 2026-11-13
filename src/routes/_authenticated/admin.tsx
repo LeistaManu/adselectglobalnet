@@ -7,6 +7,7 @@ import { Logo } from "@/components/app/Logo";
 import { Stat } from "@/components/app/ui";
 import {
   ActivitiesPanel,
+  BalanceProofsPanel,
   NotificationsPanel,
   SettingsPanel,
   TransactionsPanel,
@@ -35,6 +36,7 @@ export const Route = createFileRoute("/_authenticated/admin")({
 
 const tabs = [
   { key: "withdrawals", label: "Withdrawals" },
+  { key: "proofs", label: "Balance screenshots" },
   { key: "users", label: "Users" },
   { key: "transactions", label: "Transactions" },
   { key: "activities", label: "Activities" },
@@ -85,6 +87,7 @@ function AdminPage() {
       </nav>
 
       {tab === "withdrawals" && <WithdrawalsPanel />}
+      {tab === "proofs" && <BalanceProofsPanel />}
       {tab === "users" && <UsersPanel />}
       {tab === "transactions" && <TransactionsPanel />}
       {tab === "activities" && <ActivitiesPanel />}

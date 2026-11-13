@@ -122,6 +122,53 @@ export type Database = {
         }
         Relationships: []
       }
+      balance_syncs: {
+        Row: {
+          adjustment: number | null
+          created_at: string
+          detected_amount: number | null
+          id: string
+          image_path: string
+          previous_balance: number | null
+          reason: string
+          reversed_at: string | null
+          status: string
+          user_id: string
+        }
+        Insert: {
+          adjustment?: number | null
+          created_at?: string
+          detected_amount?: number | null
+          id?: string
+          image_path: string
+          previous_balance?: number | null
+          reason?: string
+          reversed_at?: string | null
+          status: string
+          user_id: string
+        }
+        Update: {
+          adjustment?: number | null
+          created_at?: string
+          detected_amount?: number | null
+          id?: string
+          image_path?: string
+          previous_balance?: number | null
+          reason?: string
+          reversed_at?: string | null
+          status?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "balance_syncs_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       daily_claims: {
         Row: {
           amount: number
@@ -360,6 +407,7 @@ export type Database = {
           username: string
         }[]
       }
+      admin_reverse_balance_sync: { Args: { _id: string }; Returns: undefined }
       admin_update_withdrawal: {
         Args: {
           _id: string
@@ -445,6 +493,33 @@ export type Database = {
       }
       start_activity: { Args: { _activity_id: string }; Returns: Json }
       system_cancel_withdrawal: { Args: { _id: string }; Returns: undefined }
+      system_record_balance_sync: {
+        Args: {
+          _amount: number
+          _image_path: string
+          _ok: boolean
+          _reason: string
+          _user_id: string
+        }
+        Returns: {
+          adjustment: number | null
+          created_at: string
+          detected_amount: number | null
+          id: string
+          image_path: string
+          previous_balance: number | null
+          reason: string
+          reversed_at: string | null
+          status: string
+          user_id: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "balance_syncs"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       update_my_name: { Args: { _full_name: string }; Returns: undefined }
     }
     Enums: {

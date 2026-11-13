@@ -512,3 +512,108 @@ export function NotificationsPanel() {
     </div>
   );
 }
+
+/* ---------------- Balance screenshots ---------------- */
+export function BalanceProofsPanel() {
+  const qc = useQueryClient();
+  const [status, setStatus] = useState<string>("applied");
+  const [busy, setBusy] = useState<string | null>(null);
+  const { data, isLoading } = useQuery({
+    queryKey: ["admin", "balance-syncs"],
+    queryFn: async () => {
+      const rows = unwrap(
+        await supabase
+          .from("balance_syncs")
+          .select("*, profiles(username, email, member_id)")
+          .order("created_at", { ascending: false })
+          .limit(200),
+      );
+      const paths = rows.map((r) => r.image_path);
+      const urls: Record<string, string> = {};
+      if (paths.length) {
+        const { data: signed } = await supabase.storage.from("balance-proofs").createSignedUrls(paths, 60 * 60);
+        for (const s of signed ?? []) if (s.path && s.signedUrl) urls[s.path] = s.signedUrl;
+      }
+      return rows.map((r) => ({ ...r, url: urls[r.image_path] ?? null }));
+    },
+  });
+
+  async function reverse(id: string) {
+    if (!window.confirm("Reverse this update? The user's balance goes back to what it was before.")) return;
+    setBusy(id);
+    const { error } = await supabase.rpc("admin_reverse_balance_sync", { _id: id });
+    setBusy(null);
+    if (error) { toast.error(error.message); return; }
+    toast.success("Update reversed");
+    qc.invalidateQueries({ queryKey: ["admin"] });
+  }
+
+  const list = (data ?? []).filter((r) => (status === "all" ? true : r.status === status));
+
+  return (
+    <Panel>
+      <PanelTitle>Balance screenshots</PanelTitle>
+      <div className="mb-4 flex flex-wrap gap-2">
+        {["applied", "rejected", "reversed", "all"].map((s) => (
+          <button
+            key={s}
+            onClick={() => setStatus(s)}
+            className={cn(
+              "rounded-full px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-[0.15em]",
+              status === s ? "bg-gold text-primary-foreground" : "bg-surface-raised text-muted-foreground",
+            )}
+          >
+            {s}
+          </button>
+        ))}
+      </div>
+      {isLoading ? (
+        <Loading />
+      ) : list.length === 0 ? (
+        <EmptyState icon={<Check />} title="Nothing here" />
+      ) : (
+        <ul className="space-y-3">
+          {list.map((r) => (
+            <li key={r.id} className="flex flex-col gap-4 rounded-2xl border border-border bg-background/40 p-4 sm:flex-row">
+              {r.url ? (
+                <a href={r.url} target="_blank" rel="noreferrer" className="shrink-0">
+                  <img src={r.url} alt="Balance screenshot" className="h-40 w-full rounded-xl object-contain sm:w-40" />
+                </a>
+              ) : (
+                <div className="grid h-40 w-full shrink-0 place-items-center rounded-xl bg-surface-raised text-xs text-muted-foreground sm:w-40">
+                  No image
+                </div>
+              )}
+              <div className="min-w-0 flex-1">
+                <div className="flex flex-wrap items-start justify-between gap-2">
+                  <div>
+                    <p className="font-display text-2xl font-semibold tabular">
+                      {r.detected_amount !== null ? money(r.detected_amount) : "—"}
+                    </p>
+                    {r.status !== "rejected" && r.previous_balance !== null && (
+                      <p className="text-xs text-muted-foreground tabular">
+                        Was {money(r.previous_balance)} · change {Number(r.adjustment) >= 0 ? "+" : "−"}
+                        {money(Math.abs(Number(r.adjustment)))}
+                      </p>
+                    )}
+                  </div>
+                  <StatusBadge status={r.status} />
+                </div>
+                <p className="mt-1 text-xs text-muted-foreground">
+                  @{r.profiles?.username} · {r.profiles?.email} · {r.profiles ? memberCode(r.profiles.member_id) : ""}
+                </p>
+                <p className="text-xs text-muted-foreground">{formatDateTime(r.created_at)}</p>
+                {r.reason && <p className="mt-1 text-xs text-muted-foreground/80">AI note: {r.reason}</p>}
+                {r.status === "applied" && (
+                  <Button size="sm" variant="destructive" className="mt-3" disabled={busy === r.id} onClick={() => reverse(r.id)}>
+                    {busy === r.id ? <Loader2 className="animate-spin" /> : <X />} Reverse
+                  </Button>
+                )}
+              </div>
+            </li>
+          ))}
+        </ul>
+      )}
+    </Panel>
+  );
+}

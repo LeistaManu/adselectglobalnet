@@ -69,3 +69,9 @@ export const referralsQuery = queryOptions({
   queryKey: ["referrals"],
   queryFn: async () => unwrap(await supabase.rpc("my_referrals")),
 });
+
+export const balanceSyncsQuery = queryOptions({
+  queryKey: ["balance-syncs"],
+  queryFn: async () =>
+    unwrap(await supabase.from("balance_syncs").select("*").order("created_at", { ascending: false }).limit(10)),
+});

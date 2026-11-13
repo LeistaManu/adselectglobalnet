@@ -58,6 +58,8 @@ const statusStyles: Record<string, string> = {
   completed: "bg-success/15 text-success",
   rejected: "bg-destructive/15 text-destructive",
   cancelled: "bg-muted text-muted-foreground",
+  applied: "bg-success/15 text-success",
+  reversed: "bg-muted text-muted-foreground",
 };
 
 export function StatusBadge({ status }: { status: string }) {

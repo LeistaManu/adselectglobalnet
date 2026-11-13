@@ -3,9 +3,10 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { ArrowDownLeft, ArrowUpRight, History, Receipt } from "lucide-react";
 import { CashOutDialog } from "@/components/app/CashOutDialog";
+import { PrimaryBalanceSync } from "@/components/app/PrimaryBalanceSync";
 import { EmptyState, PageHeader, Panel, PanelTitle, Stat, StatusBadge } from "@/components/app/ui";
 import { Button } from "@/components/ui/button";
-import { dashboardQuery, ledgerQuery, withdrawalsQuery } from "@/lib/queries";
+import { balanceSyncsQuery, dashboardQuery, ledgerQuery, meQuery, withdrawalsQuery } from "@/lib/queries";
 import { formatDateTime, formatPhone, money } from "@/lib/format";
 import { cn } from "@/lib/utils";
 
@@ -23,6 +24,8 @@ export const Route = createFileRoute("/_authenticated/_tabs/wallet")({
       context.queryClient.ensureQueryData(dashboardQuery),
       context.queryClient.ensureQueryData(withdrawalsQuery),
       context.queryClient.ensureQueryData(ledgerQuery),
+      context.queryClient.ensureQueryData(balanceSyncsQuery),
+      context.queryClient.ensureQueryData(meQuery),
     ]),
   component: WalletPage,
 });
@@ -37,6 +40,7 @@ function WalletPage() {
   const { data: dash } = useSuspenseQuery(dashboardQuery);
   const { data: withdrawals } = useSuspenseQuery(withdrawalsQuery);
   const { data: ledger } = useSuspenseQuery(ledgerQuery);
+  const { data: me } = useSuspenseQuery(meQuery);
   const [filter, setFilter] = useState<(typeof filters)[number]["key"]>("all");
 
   const shown = withdrawals.filter((w) =>
@@ -60,6 +64,8 @@ function WalletPage() {
           )}
         />
       </Panel>
+
+      <PrimaryBalanceSync userId={me.user.id} />
 
       <div className="grid grid-cols-3 gap-3">
         <Stat label="Total earned" value={money(dash.total_earned)} />

@@ -37,3 +37,4 @@ use the editor.
 - Login by username or member ID resolves the email server-side (`signInWithIdentifier`) so emails are never exposed to anonymous visitors.
 - Admin access comes only from `public.user_roles` (granted to the admin email in the signup trigger), checked with `has_role` in SQL and in the admin route guard.
 - Signed-in screens live under `src/routes/_authenticated/_tabs/*` (bottom-nav layout); the admin dashboard is `src/routes/_authenticated/admin.tsx`.
+- Primary-balance screenshots go through the `syncBalanceFromScreenshot` server function: the AI reads the private `balance-proofs` image, then the service-role-only `system_record_balance_sync` SQL function writes a ledger adjustment that sets the balance to the read amount, so the browser can never choose the amount; admins can undo it with `admin_reverse_balance_sync`.
