@@ -10,33 +10,189 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as ForgotIdRouteImport } from './routes/forgot-id'
+import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
+import { Route as RegisterRouteImport } from './routes/register'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as AuthenticatedTabsRouteImport } from './routes/_authenticated/_tabs'
+import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
+import { Route as AuthenticatedTabsEarnRouteImport } from './routes/_authenticated/_tabs/earn'
+import { Route as AuthenticatedTabsHomeRouteImport } from './routes/_authenticated/_tabs/home'
+import { Route as AuthenticatedTabsMeRouteImport } from './routes/_authenticated/_tabs/me'
+import { Route as AuthenticatedTabsTeamRouteImport } from './routes/_authenticated/_tabs/team'
+import { Route as AuthenticatedTabsWalletRouteImport } from './routes/_authenticated/_tabs/wallet'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ForgotIdRoute = ForgotIdRouteImport.update({
+  id: '/forgot-id',
+  path: '/forgot-id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
+  id: '/forgot-password',
+  path: '/forgot-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RegisterRoute = RegisterRouteImport.update({
+  id: '/register',
+  path: '/register',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedTabsRoute = AuthenticatedTabsRouteImport.update({
+  id: '/_tabs',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedTabsEarnRoute = AuthenticatedTabsEarnRouteImport.update({
+  id: '/earn',
+  path: '/earn',
+  getParentRoute: () => AuthenticatedTabsRoute,
+} as any)
+const AuthenticatedTabsHomeRoute = AuthenticatedTabsHomeRouteImport.update({
+  id: '/home',
+  path: '/home',
+  getParentRoute: () => AuthenticatedTabsRoute,
+} as any)
+const AuthenticatedTabsMeRoute = AuthenticatedTabsMeRouteImport.update({
+  id: '/me',
+  path: '/me',
+  getParentRoute: () => AuthenticatedTabsRoute,
+} as any)
+const AuthenticatedTabsTeamRoute = AuthenticatedTabsTeamRouteImport.update({
+  id: '/team',
+  path: '/team',
+  getParentRoute: () => AuthenticatedTabsRoute,
+} as any)
+const AuthenticatedTabsWalletRoute = AuthenticatedTabsWalletRouteImport.update({
+  id: '/wallet',
+  path: '/wallet',
+  getParentRoute: () => AuthenticatedTabsRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/forgot-id': typeof ForgotIdRoute
+  '/forgot-password': typeof ForgotPasswordRoute
+  '/register': typeof RegisterRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/admin': typeof AuthenticatedAdminRoute
+  '/earn': typeof AuthenticatedTabsEarnRoute
+  '/home': typeof AuthenticatedTabsHomeRoute
+  '/me': typeof AuthenticatedTabsMeRoute
+  '/team': typeof AuthenticatedTabsTeamRoute
+  '/wallet': typeof AuthenticatedTabsWalletRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/forgot-id': typeof ForgotIdRoute
+  '/forgot-password': typeof ForgotPasswordRoute
+  '/register': typeof RegisterRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/admin': typeof AuthenticatedAdminRoute
+  '/earn': typeof AuthenticatedTabsEarnRoute
+  '/home': typeof AuthenticatedTabsHomeRoute
+  '/me': typeof AuthenticatedTabsMeRoute
+  '/team': typeof AuthenticatedTabsTeamRoute
+  '/wallet': typeof AuthenticatedTabsWalletRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/auth': typeof AuthRoute
+  '/forgot-id': typeof ForgotIdRoute
+  '/forgot-password': typeof ForgotPasswordRoute
+  '/register': typeof RegisterRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/_authenticated/_tabs': typeof AuthenticatedTabsRouteWithChildren
+  '/_authenticated/admin': typeof AuthenticatedAdminRoute
+  '/_authenticated/_tabs/earn': typeof AuthenticatedTabsEarnRoute
+  '/_authenticated/_tabs/home': typeof AuthenticatedTabsHomeRoute
+  '/_authenticated/_tabs/me': typeof AuthenticatedTabsMeRoute
+  '/_authenticated/_tabs/team': typeof AuthenticatedTabsTeamRoute
+  '/_authenticated/_tabs/wallet': typeof AuthenticatedTabsWalletRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/forgot-id'
+    | '/forgot-password'
+    | '/register'
+    | '/reset-password'
+    | '/admin'
+    | '/earn'
+    | '/home'
+    | '/me'
+    | '/team'
+    | '/wallet'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/auth'
+    | '/forgot-id'
+    | '/forgot-password'
+    | '/register'
+    | '/reset-password'
+    | '/admin'
+    | '/earn'
+    | '/home'
+    | '/me'
+    | '/team'
+    | '/wallet'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/auth'
+    | '/forgot-id'
+    | '/forgot-password'
+    | '/register'
+    | '/reset-password'
+    | '/_authenticated/_tabs'
+    | '/_authenticated/admin'
+    | '/_authenticated/_tabs/earn'
+    | '/_authenticated/_tabs/home'
+    | '/_authenticated/_tabs/me'
+    | '/_authenticated/_tabs/team'
+    | '/_authenticated/_tabs/wallet'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AuthRoute: typeof AuthRoute
+  ForgotIdRoute: typeof ForgotIdRoute
+  ForgotPasswordRoute: typeof ForgotPasswordRoute
+  RegisterRoute: typeof RegisterRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +204,140 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/forgot-id': {
+      id: '/forgot-id'
+      path: '/forgot-id'
+      fullPath: '/forgot-id'
+      preLoaderRoute: typeof ForgotIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/forgot-password': {
+      id: '/forgot-password'
+      path: '/forgot-password'
+      fullPath: '/forgot-password'
+      preLoaderRoute: typeof ForgotPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/register': {
+      id: '/register'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof RegisterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/_tabs': {
+      id: '/_authenticated/_tabs'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedTabsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/admin': {
+      id: '/_authenticated/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedAdminRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/_tabs/earn': {
+      id: '/_authenticated/_tabs/earn'
+      path: '/earn'
+      fullPath: '/earn'
+      preLoaderRoute: typeof AuthenticatedTabsEarnRouteImport
+      parentRoute: typeof AuthenticatedTabsRoute
+    }
+    '/_authenticated/_tabs/home': {
+      id: '/_authenticated/_tabs/home'
+      path: '/home'
+      fullPath: '/home'
+      preLoaderRoute: typeof AuthenticatedTabsHomeRouteImport
+      parentRoute: typeof AuthenticatedTabsRoute
+    }
+    '/_authenticated/_tabs/me': {
+      id: '/_authenticated/_tabs/me'
+      path: '/me'
+      fullPath: '/me'
+      preLoaderRoute: typeof AuthenticatedTabsMeRouteImport
+      parentRoute: typeof AuthenticatedTabsRoute
+    }
+    '/_authenticated/_tabs/team': {
+      id: '/_authenticated/_tabs/team'
+      path: '/team'
+      fullPath: '/team'
+      preLoaderRoute: typeof AuthenticatedTabsTeamRouteImport
+      parentRoute: typeof AuthenticatedTabsRoute
+    }
+    '/_authenticated/_tabs/wallet': {
+      id: '/_authenticated/_tabs/wallet'
+      path: '/wallet'
+      fullPath: '/wallet'
+      preLoaderRoute: typeof AuthenticatedTabsWalletRouteImport
+      parentRoute: typeof AuthenticatedTabsRoute
+    }
   }
 }
 
+interface AuthenticatedTabsRouteChildren {
+  AuthenticatedTabsEarnRoute: typeof AuthenticatedTabsEarnRoute
+  AuthenticatedTabsHomeRoute: typeof AuthenticatedTabsHomeRoute
+  AuthenticatedTabsMeRoute: typeof AuthenticatedTabsMeRoute
+  AuthenticatedTabsTeamRoute: typeof AuthenticatedTabsTeamRoute
+  AuthenticatedTabsWalletRoute: typeof AuthenticatedTabsWalletRoute
+}
+
+const AuthenticatedTabsRouteChildren: AuthenticatedTabsRouteChildren = {
+  AuthenticatedTabsEarnRoute: AuthenticatedTabsEarnRoute,
+  AuthenticatedTabsHomeRoute: AuthenticatedTabsHomeRoute,
+  AuthenticatedTabsMeRoute: AuthenticatedTabsMeRoute,
+  AuthenticatedTabsTeamRoute: AuthenticatedTabsTeamRoute,
+  AuthenticatedTabsWalletRoute: AuthenticatedTabsWalletRoute,
+}
+
+const AuthenticatedTabsRouteWithChildren =
+  AuthenticatedTabsRoute._addFileChildren(AuthenticatedTabsRouteChildren)
+
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedTabsRoute: typeof AuthenticatedTabsRouteWithChildren
+  AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedTabsRoute: AuthenticatedTabsRouteWithChildren,
+  AuthenticatedAdminRoute: AuthenticatedAdminRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AuthRoute: AuthRoute,
+  ForgotIdRoute: ForgotIdRoute,
+  ForgotPasswordRoute: ForgotPasswordRoute,
+  RegisterRoute: RegisterRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
