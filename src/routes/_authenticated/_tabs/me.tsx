@@ -37,7 +37,7 @@ function MePage() {
     setSaving(true);
     const { error } = await supabase.rpc("update_my_name", { _full_name: fullName });
     setSaving(false);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     toast.success("Profile updated");
     qc.invalidateQueries({ queryKey: ["me"] });
   }

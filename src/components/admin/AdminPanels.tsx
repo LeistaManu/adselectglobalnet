@@ -57,9 +57,9 @@ export function WithdrawalsPanel() {
     }
     if (next === "completed" && !window.confirm("Confirm you have sent this M-Pesa payment?")) return;
     setBusy(id + next);
-    const { error } = await supabase.rpc("admin_update_withdrawal", { _id: id, _status: next, _note: note ?? undefined });
+    const { error } = await supabase.rpc("admin_update_withdrawal", { _id: id, _status: next, ...(note ? { _note: note } : {}) });
     setBusy(null);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     toast.success(`Marked ${next}`);
     qc.invalidateQueries({ queryKey: ["admin"] });
   }
@@ -151,7 +151,7 @@ export function UsersPanel() {
     setSaving(true);
     const { error } = await supabase.rpc("admin_adjust_balance", { _user_id: userId, _amount: Number(amount), _note: note });
     setSaving(false);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     toast.success("Balance adjusted");
     setAdjusting(null);
     setAmount("");
@@ -265,7 +265,7 @@ export function ActivitiesPanel() {
       duration_seconds: Number(form.duration),
     });
     setSaving(false);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     toast.success("Activity added");
     setForm({ title: "", description: "", url: "", reward: "0.05", duration: "30" });
     qc.invalidateQueries({ queryKey: ["admin", "activities"] });
@@ -274,7 +274,7 @@ export function ActivitiesPanel() {
 
   async function toggle(id: string, active: boolean) {
     const { error } = await supabase.from("activities").update({ active }).eq("id", id);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     qc.invalidateQueries({ queryKey: ["admin", "activities"] });
     qc.invalidateQueries({ queryKey: ["activities-today"] });
   }
@@ -282,7 +282,7 @@ export function ActivitiesPanel() {
   async function remove(id: string) {
     if (!window.confirm("Delete this activity?")) return;
     const { error } = await supabase.from("activities").delete().eq("id", id);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     qc.invalidateQueries({ queryKey: ["admin", "activities"] });
   }
 
@@ -394,7 +394,7 @@ function SettingsForm({
       })
       .eq("id", true);
     setSaving(false);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     toast.success("Settings saved");
     onSaved();
   }

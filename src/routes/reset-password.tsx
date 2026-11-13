@@ -45,12 +45,12 @@ function ResetPassword() {
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
     setError(null);
-    if (password.length < 8) return setError("Password must be at least 8 characters.");
-    if (password !== confirm) return setError("Passwords do not match.");
+    if (password.length < 8) { setError("Password must be at least 8 characters."); return; }
+    if (password !== confirm) { setError("Passwords do not match."); return; }
     setLoading(true);
     const { error } = await supabase.auth.updateUser({ password });
     setLoading(false);
-    if (error) return setError(error.message);
+    if (error) { setError(error.message); return; }
     toast.success("Password updated.");
     navigate({ to: "/home", replace: true });
   }

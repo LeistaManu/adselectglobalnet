@@ -14,7 +14,7 @@ import { Label } from "@/components/ui/label";
 
 export const Route = createFileRoute("/register")({
   validateSearch: (s: Record<string, unknown>): { ref?: string } =>
-    typeof s.ref === "string" && s.ref ? { ref: s.ref.slice(0, 16) } : {},
+    typeof s["ref"] === "string" && s["ref"] ? { ref: s["ref"].slice(0, 16) } : {},
   head: () => ({
     meta: [
       { title: "Create account — AdSelect" },

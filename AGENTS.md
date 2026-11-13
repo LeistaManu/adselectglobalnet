@@ -28,3 +28,12 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+## Project rules (AdSelect)
+
+- Every balance change is a row in `public.ledger`; balances are always summed from it, never stored, so totals stay auditable.
+- Money-moving actions (daily bonus, activity claims, withdrawals, admin status changes, adjustments) run only through SECURITY DEFINER SQL functions that lock the user's profile row, so the browser can never write balances directly.
+- Withdrawals go through the `submitWithdrawal` server function: it calls `request_withdrawal` with an idempotency key, claims `telegram_state` atomically before notifying Telegram, and cancels + refunds if Telegram fails, so each request is notified exactly once.
+- Login by username or member ID resolves the email server-side (`signInWithIdentifier`) so emails are never exposed to anonymous visitors.
+- Admin access comes only from `public.user_roles` (granted to the admin email in the signup trigger), checked with `has_role` in SQL and in the admin route guard.
+- Signed-in screens live under `src/routes/_authenticated/_tabs/*` (bottom-nav layout); the admin dashboard is `src/routes/_authenticated/admin.tsx`.

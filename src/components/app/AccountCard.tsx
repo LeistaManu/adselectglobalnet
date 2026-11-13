@@ -26,16 +26,16 @@ export function AccountCard({
       <p className="mt-7 text-[11px] font-semibold uppercase tracking-[0.25em] text-muted-foreground">Available balance</p>
       <p className="mt-1 font-display text-5xl font-semibold text-gold-gradient tabular sm:text-6xl">{money(balance)}</p>
       <div className="mt-7 flex items-end justify-between gap-4">
-        <div>
+        <div className="min-w-0">
           <p className="text-[10px] uppercase tracking-[0.25em] text-muted-foreground">Card holder</p>
-          <p className="mt-0.5 text-lg font-semibold uppercase tracking-[0.15em]">{name}</p>
+          <p className="mt-0.5 truncate text-base font-semibold uppercase tracking-[0.12em] sm:text-lg">{name}</p>
           <p className="text-xs tracking-[0.2em] text-muted-foreground tabular">{memberCode(memberId)}</p>
         </div>
         <CashOutDialog
           balance={balance}
           minWithdrawal={minWithdrawal}
           trigger={(open) => (
-            <Button variant="light" size="lg" onClick={open} className="tracking-[0.18em] uppercase">
+            <Button variant="light" onClick={open} className="h-11 shrink-0 px-4 uppercase tracking-[0.15em] sm:h-12 sm:px-6">
               Cash out <ArrowUpRight />
             </Button>
           )}

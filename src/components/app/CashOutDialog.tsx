@@ -45,11 +45,11 @@ export function CashOutDialog({
     if (loading) return;
     setError(null);
     const normalized = normalizeKePhone(phone);
-    if (!normalized) return setError("Enter a valid Kenyan M-Pesa number, e.g. 0712 345 678.");
+    if (!normalized) { setError("Enter a valid Kenyan M-Pesa number, e.g. 0712 345 678."); return; }
     const value = Math.round(Number(amount) * 100) / 100;
     if (!Number.isFinite(value) || value <= 0) return setError("Withdrawal amount must be greater than zero.");
-    if (value > balance) return setError(`Insufficient funds. Your available balance is ${money(balance)}.`);
-    if (value < minWithdrawal) return setError(`Minimum withdrawal is ${money(minWithdrawal)}.`);
+    if (value > balance) { setError(`Insufficient funds. Your available balance is ${money(balance)}.`); return; }
+    if (value < minWithdrawal) { setError(`Minimum withdrawal is ${money(minWithdrawal)}.`); return; }
 
     setLoading(true);
     try {

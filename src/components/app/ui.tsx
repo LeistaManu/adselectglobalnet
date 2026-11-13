@@ -62,7 +62,7 @@ const statusStyles: Record<string, string> = {
 
 export function StatusBadge({ status }: { status: string }) {
   return (
-    <span className={cn("rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.15em]", statusStyles[status] ?? statusStyles.cancelled)}>
+    <span className={cn("rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.15em]", statusStyles[status] ?? statusStyles["cancelled"])}>
       {status}
     </span>
   );

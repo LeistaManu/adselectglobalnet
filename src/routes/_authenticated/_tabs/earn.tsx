@@ -85,7 +85,7 @@ function ActivityCard({
     setBusy(true);
     const { data, error } = await supabase.rpc("start_activity", { _activity_id: activity.id });
     setBusy(false);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     setSession(data as unknown as Session);
   }
 
@@ -94,7 +94,7 @@ function ActivityCard({
     setBusy(true);
     const { data, error } = await supabase.rpc("claim_activity", { _session_id: session.session_id });
     setBusy(false);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     toast.success(`+${money((data as { amount: number }).amount)} earned`);
     qc.invalidateQueries({ queryKey: ["activities-today"] });
     qc.invalidateQueries({ queryKey: ["dashboard"] });

@@ -30,7 +30,8 @@ export const meQuery = queryOptions({
   queryFn: async () => {
     const { data: u } = await supabase.auth.getUser();
     if (!u.user) throw new Error("Not signed in");
-    const profile = unwrap(await supabase.from("profiles").select("*").eq("id", u.user.id).single());
+    const { data: profile, error } = await supabase.from("profiles").select("*").eq("id", u.user.id).single();
+    if (error || !profile) throw new Error(error?.message ?? "Profile not found");
     const isAdmin = unwrap(await supabase.rpc("has_role", { _user_id: u.user.id, _role: "admin" }));
     return { user: u.user, profile, isAdmin: Boolean(isAdmin) };
   },
